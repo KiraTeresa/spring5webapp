@@ -2,8 +2,10 @@ package guru.springframework.spring5webapp.bootstrap;
 
 import guru.springframework.spring5webapp.domain.Author;
 import guru.springframework.spring5webapp.domain.Book;
+import guru.springframework.spring5webapp.domain.Publisher;
 import guru.springframework.spring5webapp.repositories.AuthorRepository;
 import guru.springframework.spring5webapp.repositories.BookRepository;
+import guru.springframework.spring5webapp.repositories.PublisherRepository;
 import org.springframework.boot.CommandLineRunner; // Interface used to indicate that a bean should run when it is contained within a SpringApplication
 import org.springframework.stereotype.Component;
 
@@ -12,16 +14,21 @@ public class BootStrapData implements CommandLineRunner {
 
     private final AuthorRepository authorRepository;
     private final BookRepository bookRepository;
+    private final PublisherRepository publisherRepository;
 
     // Once Spring implements this component, it brings it into the spring context
     // Tells Spring to inject an instance of the authorRepository and the bookRepository
-    public BootStrapData(AuthorRepository authorRepository, BookRepository bookRepository) {
+    public BootStrapData(AuthorRepository authorRepository, BookRepository bookRepository, PublisherRepository publisherRepository) {
         this.authorRepository = authorRepository;
         this.bookRepository = bookRepository;
+        this.publisherRepository = publisherRepository;
     }
 
     @Override
     public void run(String... args) throws Exception {
+
+        Publisher hanser = new Publisher("Hanser Street", "Cologne", "NRW", "66476");
+        publisherRepository.save(hanser);
 
         Author eric = new Author("Eric", "Evans");
         Book ddd = new Book("Domain Driven Design", "123123");
@@ -42,6 +49,7 @@ public class BootStrapData implements CommandLineRunner {
         bookRepository.save(noEJB);
 
         System.out.println("Started in Bootstrap");
+        System.out.println("Publisher count: " + publisherRepository.count());
         System.out.println("Number of Books: " + bookRepository.count());
     }
 }
