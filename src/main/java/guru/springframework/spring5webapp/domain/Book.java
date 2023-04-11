@@ -7,7 +7,7 @@ import java.util.Set;
 @Entity // tells hibernate, that this is an entity
 public class Book {
 
-    @Id
+    @Id // Test
     @GeneratedValue(strategy = GenerationType.AUTO)// tells hibernate, how it's gonna be generated; id will be assigned by the db
     private Long id;
     private String title;
