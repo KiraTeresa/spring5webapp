@@ -27,29 +27,38 @@ public class BootStrapData implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        Publisher hanser = new Publisher("Hanser Street", "Cologne", "NRW", "66476");
-        publisherRepository.save(hanser);
+        Publisher publisher = new Publisher("Hanser", "Hanser Street", "Cologne", "NRW", "66476");
+        publisherRepository.save(publisher);
 
         Author eric = new Author("Eric", "Evans");
         Book ddd = new Book("Domain Driven Design", "123123");
         eric.getBooks().add(ddd);
         ddd.getAuthors().add(eric);
 
+        ddd.setPublisher(publisher);
+        publisher.getBooks().add(ddd);
+
         // using the repository methods to save them
-        // Underneath the covers, Spring Data JPA is utilizing Hibernate to save these into the inmemory H2 db
+        // Underneath the covers, Spring Data JPA is utilizing Hibernate to save these into the in-memory H2 db
         authorRepository.save(eric);
         bookRepository.save(ddd);
+        publisherRepository.save(publisher);
 
         Author rod = new Author("Rod", "johnson");
         Book noEJB = new Book("J2EE Development without EJB", "987987");
         rod.getBooks().add(noEJB);
         noEJB.getAuthors().add(rod);
 
+        noEJB.setPublisher(publisher);
+        publisher.getBooks().add(noEJB);
+
         authorRepository.save(rod);
         bookRepository.save(noEJB);
+        publisherRepository.save(publisher);
 
         System.out.println("Started in Bootstrap");
         System.out.println("Publisher count: " + publisherRepository.count());
         System.out.println("Number of Books: " + bookRepository.count());
+        System.out.println("Publisher Number of Books: " + publisher.getBooks().size());
     }
 }
